@@ -19,6 +19,7 @@
     "@types/react-modal-video": "^1.2.3",
     "@types/react-transition-group": "^4.4.9",
     "apexcharts": "^3.44.0",
+    "axios": "^1.7.9",
     "generate-password": "^1.7.1",
     "jsvectormap": "^1.5.3",
     "next": "^14.0.4",

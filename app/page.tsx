@@ -15,7 +15,7 @@ const HomePage = () => {
   return (
     <main>
       <Hero />
-      <AppSetup />
+      {/* <AppSetup />
       <SmartUi />
       <PrebuiltPages sliceNum={12} />
       <ForDev />
@@ -25,7 +25,7 @@ const HomePage = () => {
       <ReadyToDive />
       <HardRock />
       <FaQs />
-      <Footer />
+      <Footer /> */}
     </main>
   );
 };
