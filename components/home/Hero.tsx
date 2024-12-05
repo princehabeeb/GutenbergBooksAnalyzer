@@ -26,8 +26,8 @@ const Hero = () => {
   
     setIsLoading(true);
   
-    const contentUrl = `http://localhost:5000/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`)}`;
-    const metadataUrl = `http://localhost:5000/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/ebooks/${bookID}`)}`;
+    const contentUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`)}`;
+    const metadataUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/ebooks/${bookID}`)}`;
 
 
   
