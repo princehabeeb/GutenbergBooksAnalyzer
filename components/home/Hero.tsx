@@ -1,17 +1,6 @@
 "use client";
-import browserDark from "@/public/images/home/browser-dark.png";
-import browser from "@/public/images/home/browser.png";
-import HeroImg from "@/public/images/home/main.png";
-import osDark from "@/public/images/home/os-dark.png";
-import os from "@/public/images/home/os.png";
-import projectStatusDark from "@/public/images/home/projects-status-dark.png";
-import projectStatus from "@/public/images/home/projects-status.png";
-import transactionsDark from "@/public/images/home/transactions-dark.png";
-import transactions from "@/public/images/home/transactions.png";
 import { IconArrowUpRight, IconMenu2, IconSearch, IconLoader } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
-import Link from "next/link";
 import Navbar from "./Navbar";
 import { useState } from "react";
 import axios from "axios";
@@ -37,12 +26,28 @@ const Hero = () => {
 
     setIsLoading(true);
 
+    const contentUrl = `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
+    const metadataUrl = `https://www.gutenberg.org/ebooks/${bookID}`;
+
     try {
-      const response = await axios.get(`/api/books?id=${bookID}`);
-      setBooks((prev) => [...prev, response.data as Book]);
+      // Fetch content and metadata
+      const [contentResponse, metadataResponse] = await Promise.all([
+        axios.get(contentUrl),
+        axios.get(metadataUrl),
+      ]);
+
+      // Extract the first 100 characters of the content as a preview
+      const bookContent = contentResponse.data.slice(0, 100) + "...";
+      const bookMetadata = metadataResponse.request.responseURL; 
+
+      setBooks((prev) => [
+        ...prev,
+        { title: `Book ID: ${bookID}`, metadata: `${bookMetadata}\n${bookContent}` },
+      ]);
+
       toast.success("Book fetched successfully!");
     } catch (err) {
-      toast.error("Error fetching book. Please try again.");
+      toast.error("Error fetching book. Please check the Book ID and try again.");
       console.error(err);
     } finally {
       setIsLoading(false);
