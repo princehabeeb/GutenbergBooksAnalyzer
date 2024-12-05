@@ -26,8 +26,11 @@ const Hero = () => {
   
     setIsLoading(true);
   
-    const contentUrl = `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
-    const metadataUrl = `https://www.gutenberg.org/ebooks/${bookID}`;
+    // const contentUrl = `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
+    // const metadataUrl = `https://www.gutenberg.org/ebooks/${bookID}`;
+    const contentUrl = `https://cors-anywhere.herokuapp.com/https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
+    const metadataUrl = `https://cors-anywhere.herokuapp.com/https://www.gutenberg.org/ebooks/${bookID}`;
+
   
     try {
       // Fetch content and metadata
