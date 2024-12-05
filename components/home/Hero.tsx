@@ -26,10 +26,9 @@ const Hero = () => {
   
     setIsLoading(true);
   
-    // const contentUrl = `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
-    // const metadataUrl = `https://www.gutenberg.org/ebooks/${bookID}`;
-    const contentUrl = `https://cors-anywhere.herokuapp.com/https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
-    const metadataUrl = `https://cors-anywhere.herokuapp.com/https://www.gutenberg.org/ebooks/${bookID}`;
+    const contentUrl = `http://localhost:5000/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`)}`;
+    const metadataUrl = `http://localhost:5000/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/ebooks/${bookID}`)}`;
+
 
   
     try {
@@ -89,7 +88,7 @@ const Hero = () => {
                 ) : (
                   <IconSearch />
                 )}
-                <span className="ml-2">Fetch Book</span>
+                <span className="ml-2 hidden md:block">Fetch Book</span>
               </button>
             </div>
             <div className="mt-8">
