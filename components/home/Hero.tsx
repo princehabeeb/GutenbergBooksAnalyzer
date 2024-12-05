@@ -8,6 +8,7 @@ import projectStatusDark from "@/public/images/home/projects-status-dark.png";
 import projectStatus from "@/public/images/home/projects-status.png";
 import transactionsDark from "@/public/images/home/transactions-dark.png";
 import transactions from "@/public/images/home/transactions.png";
+import { IconArrowUpRight, IconMenu2, IconSearch } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,18 +42,19 @@ const Hero = () => {
         <div className="container">
           <div className="min-h-screen p-4 flex flex-col items-center">
             <h1 className="text-2xl font-bold">Project Gutenberg Book Explorer</h1>
-            <div className="mt-4 ">
+            <div className="mt-4 w-full flex items-center justify-center">
               <input
                 type="text"
                 placeholder="Enter Book ID"
-                className="p-2 border border-gray-400 rounded"
+                className="bg-transparent px-5 py-2 xxl:py-3 rounded-[30px] border bg-white focus:outline-none  md:w-[400px]"
                 value={bookID}
                 onChange={(e) => setBookID(e.target.value)}
               />
               <button
                 onClick={fetchBook}
-                className="ml-2 px-4 py-2 bg-blue-500 text-white rounded"
+                className="ml-2 px-4 py-2 flex rounded-[30px] border bg-blue-500 text-white"
               >
+                 <IconSearch />
                 Fetch Book
               </button>
             </div>

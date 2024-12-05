@@ -77,16 +77,6 @@ const Navbar = () => {
           scrolled && "lg:py-4 xxl:!py-5"
         }`}>
         <div className="flex items-center gap-2 sm:gap-4 xl:gap-6">
-          <Link href="/" className="shrink-0">
-            <Image
-              width={174}
-              height={38}
-              src={logo}
-              className="max-xxl:hidden"
-              alt="logo"
-            />
-            <Image src={logoIcon} className="xxl:hidden" alt="logo" />
-          </Link>
           <div className="relative" ref={searchContainerRef}>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -97,7 +87,7 @@ const Navbar = () => {
               }  flex gap-3 rounded-[30px] border max-md:border-n30 lg:border-transparent px-3 xl:px-5 xxl:px-6 items-center justify-between xxl:w-[336px]`}>
               <input
                 type="text"
-                placeholder="E.g. list, sales.."
+                placeholder="Search book.."
                 onFocus={handleSearch}
                 onInput={handleSearch}
                 className="bg-transparent py-2 xxl:py-3 focus:outline-none w-full"
