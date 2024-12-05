@@ -23,36 +23,43 @@ const Hero = () => {
       toast.error("Please enter a Book ID.");
       return;
     }
-
+  
     setIsLoading(true);
-
+  
     const contentUrl = `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`;
     const metadataUrl = `https://www.gutenberg.org/ebooks/${bookID}`;
-
+  
     try {
       // Fetch content and metadata
       const [contentResponse, metadataResponse] = await Promise.all([
         axios.get(contentUrl),
         axios.get(metadataUrl),
       ]);
-
-      // Extract the first 100 characters of the content as a preview
-      const bookContent = contentResponse.data.slice(0, 100) + "...";
-      const bookMetadata = metadataResponse.request.responseURL; 
-
-      setBooks((prev) => [
-        ...prev,
-        { title: `Book ID: ${bookID}`, metadata: `${bookMetadata}\n${bookContent}` },
-      ]);
-
-      toast.success("Book fetched successfully!");
+  
+      // Check for successful responses
+      if (contentResponse.status === 200 && metadataResponse.status === 200) {
+        const bookContent = contentResponse.data.slice(0, 100) + "...";
+        const bookMetadata = metadataResponse.request.responseURL;
+  
+        setBooks((prev) => [
+          ...prev,
+          { title: `Book ID: ${bookID}`, metadata: `${bookMetadata}\n${bookContent}` },
+        ]);
+  
+        toast.success("Book fetched successfully!");
+      } else {
+        // Handle unsuccessful status codes
+        toast.error("Unable to fetch book. Please check the Book ID.");
+      }
     } catch (err) {
+      // Log the error and show a toast
       toast.error("Error fetching book. Please check the Book ID and try again.");
       console.error(err);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className=" bg-cover bg-no-repeat relative">
