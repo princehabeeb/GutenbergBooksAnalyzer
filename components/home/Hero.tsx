@@ -6,6 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 interface Book {
   title: string;
@@ -19,6 +20,7 @@ const Hero = () => {
   const [bookID, setBookID] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter()
 
   const fetchBook = async () => {
     if (!bookID) {
@@ -77,10 +79,23 @@ const Hero = () => {
     toast.success(`Saved "${book.title}" to your collection!`);
   };
 
+  // const analyzeText = (book: Book) => {
+  //   toast.info(`Analyzing text of "${book.title}"...`);
+  //   // Mock text analysis logic here
+  // };
+
   const analyzeText = (book: Book) => {
     toast.info(`Analyzing text of "${book.title}"...`);
-    // Mock text analysis logic here
+  
+    router.push({
+      pathname: "/analyze",
+      query: {
+        bookTitle: book.title,
+        bookContent: book.content,
+      },
+    } as unknown as string); // Type assertion to bypass the TS error
   };
+  
 
   return (
     <div className=" bg-cover bg-no-repeat relative">
