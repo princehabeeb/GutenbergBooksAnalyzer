@@ -87,14 +87,16 @@ const Hero = () => {
   const analyzeText = (book: Book) => {
     toast.info(`Analyzing text of "${book.title}"...`);
   
-    router.push({
-      pathname: "/analyze",
-      query: {
-        bookTitle: book.title,
-        bookContent: book.content,
-      },
-    } as unknown as string); // Type assertion to bypass the TS error
+    // Serialize query parameters
+    const queryString = new URLSearchParams({
+      bookTitle: book.title,
+      bookContent: book.content,
+    }).toString();
+  
+    // Navigate to the analyze page
+    router.push(`/analyze?${queryString}`);
   };
+  
   
 
   return (
