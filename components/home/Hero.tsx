@@ -79,10 +79,7 @@ const Hero = () => {
     toast.success(`Saved "${book.title}" to your collection!`);
   };
 
-  // const analyzeText = (book: Book) => {
-  //   toast.info(`Analyzing text of "${book.title}"...`);
-  //   // Mock text analysis logic here
-  // };
+ 
 
   const analyzeText = (book: Book) => {
     toast.info(`Analyzing text of "${book.title}"...`);
