@@ -1,26 +1,45 @@
 "use client";
-import { IconArrowUpRight, IconMenu2, IconSearch, IconLoader, IconBook, IconBookmark, IconTex  } from "@tabler/icons-react";
+import ReactModal from "react-modal";
+import {
+  IconArrowUpRight,
+  IconMenu2,
+  IconSearch,
+  IconLoader,
+  IconBook,
+  IconBookmark,
+  IconTex,
+} from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 import Navbar from "./Navbar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useRouter } from "next/navigation";
 
 interface Book {
   title: string;
   metadata: string;
   content: string;
-  isFullContentShown: boolean; // New state for toggling content display
+  isFullContentShown: boolean;
 }
+
+ReactModal.setAppElement("#modal-root");
+
+
 
 const Hero = () => {
   const { theme } = useTheme();
   const [bookID, setBookID] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter()
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [analysisResults, setAnalysisResults] = useState<any>(null);
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+
+  useEffect(() => {
+    // Use the body as the app element for React Modal
+    ReactModal.setAppElement("body");
+  }, []);
 
   const fetchBook = async () => {
     if (!bookID) {
@@ -30,8 +49,12 @@ const Hero = () => {
 
     setIsLoading(true);
 
-    const contentUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`)}`;
-    const metadataUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(`https://www.gutenberg.org/ebooks/${bookID}`)}`;
+    const contentUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(
+      `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`
+    )}`;
+    const metadataUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(
+      `https://www.gutenberg.org/ebooks/${bookID}`
+    )}`;
 
     try {
       const [contentResponse, metadataResponse] = await Promise.all([
@@ -40,8 +63,8 @@ const Hero = () => {
       ]);
 
       if (contentResponse.status === 200 && metadataResponse.status === 200) {
-        const bookContent = contentResponse.data; // Full content
-        const bookMetadata = metadataResponse.request.responseURL; // Metadata URL
+        const bookContent = contentResponse.data;
+        const bookMetadata = metadataResponse.request.responseURL;
 
         setBooks((prev) => [
           ...prev,
@@ -49,7 +72,7 @@ const Hero = () => {
             title: `Book ID: ${bookID}`,
             metadata: bookMetadata,
             content: bookContent,
-            isFullContentShown: false, // Default to showing short content
+            isFullContentShown: false,
           },
         ]);
 
@@ -75,26 +98,27 @@ const Hero = () => {
     );
   };
 
-  const saveToCollection = (book: Book) => {
-    toast.success(`Saved "${book.title}" to your collection!`);
+  const analyzeText = async (book: Book) => {
+    setSelectedBook(book);
+    setIsModalOpen(true);
+
+    try {
+      toast.info(`Analyzing text of "${book.title}"...`);
+      const response = await axios.post("https://groq.com/analyze", {
+        text: book.content,
+      });
+
+      setAnalysisResults(response.data);
+    } catch (err) {
+      toast.error("Error analyzing text. Please try again.");
+      console.error(err);
+    }
   };
 
- 
-
-  const analyzeText = (book: Book) => {
-    toast.info(`Analyzing text of "${book.title}"...`);
-  
-    // Serialize query parameters
-    const queryString = new URLSearchParams({
-      bookTitle: book.title,
-      bookContent: book.content,
-    }).toString();
-  
-    // Navigate to the analyze page
-    router.push(`/analyze?${queryString}`);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setAnalysisResults(null);
   };
-  
-  
 
   return (
     <div className=" bg-cover bg-no-repeat relative">
@@ -116,11 +140,7 @@ const Hero = () => {
                 onClick={fetchBook}
                 className="ml-2 px-4 py-2 flex rounded-[30px] border bg-blue-500 text-white items-center"
               >
-                {isLoading ? (
-                  <IconLoader className="animate-spin" />
-                ) : (
-                  <IconSearch />
-                )}
+                {isLoading ? <IconLoader className="animate-spin" /> : <IconSearch />}
                 <span className="ml-2 hidden md:block">Fetch Book</span>
               </button>
             </div>
@@ -137,16 +157,10 @@ const Hero = () => {
                       <IconBook className="mr-1" /> {book.isFullContentShown ? "Show Less" : "Show More"}
                     </button>
                     <button
-                      onClick={() => saveToCollection(book)}
-                      className="text-green-500 flex items-center"
-                    >
-                      <IconBookmark className="mr-1" /> Save
-                    </button>
-                    <button
                       onClick={() => analyzeText(book)}
                       className="text-purple-500 flex items-center"
                     >
-                      <IconTex  className="mr-1" /> Analyze
+                      <IconTex className="mr-1" /> Analyze
                     </button>
                   </div>
                 </div>
@@ -155,6 +169,21 @@ const Hero = () => {
           </div>
         </div>
       </div>
+
+      <ReactModal isOpen={isModalOpen} onRequestClose={closeModal} className="modal">
+        <h2 className="font-bold text-xl mb-4">Analysis of {selectedBook?.title}</h2>
+        {analysisResults ? (
+          <div>
+            <p><strong>Key Characters:</strong> {analysisResults.characters.join(", ")}</p>
+            <p><strong>Language:</strong> {analysisResults.language}</p>
+            <p><strong>Sentiment:</strong> {analysisResults.sentiment}</p>
+            <p><strong>Plot Summary:</strong> {analysisResults.plotSummary}</p>
+          </div>
+        ) : (
+          <p>Loading analysis...</p>
+        )}
+        <button onClick={closeModal} className="text-red-500 mt-4">Close</button>
+      </ReactModal>
     </div>
   );
 };

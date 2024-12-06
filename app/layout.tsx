@@ -25,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="!scroll-smooth">
       <body className={`${inter.className} text-n500 dark:text-n30`}>
+      <div id="modal-root"></div>
         <ThemeProvider>
           <Next13NProgress color="#5D69F4" height={3} />
           <LayoutProvider>{children}</LayoutProvider>
