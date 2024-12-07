@@ -3,79 +3,111 @@ import { IconArrowLeft, IconEye, IconEyeOff } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const LoginOneContent = () => {
   const [showPass, setShowPass] = useState(false);
+
+  const fadeIn = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
   return (
-    <div className="min-h-screen grid grid-cols-2 gap-5 relative lg:after:absolute lg:after:w-1/2 py-10 lg:py-20 after:h-full lg:after:bg-primary/5 lg:dark:after:bg-bg3 ltr:after:right-0 rtl:after:left-0 after:top-0">
-      <div className="col-span-2 lg:col-span-1 flex items-center justify-center px-5 md:px-10 xl:px-20 xxl:px-28">
-        <div className="box w-full p-3 md:p-4 xl:p-6 items-center">
-          <form className="box bg-primary/5 dark:bg-bg3 lg:p-6 xl:p-8">
-            <Link
-              href="/dashboards/personal-1"
-              className="flex items-center gap-2">
+    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-5 py-10 lg:py-20 relative">
+      {/* Left Section */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        className="flex items-center justify-center px-5 md:px-10 xl:px-20 xxl:px-28"
+      >
+        <div className="box w-full p-6 md:p-8 bg-white dark:bg-bg3 shadow-lg rounded-lg">
+          <form className="space-y-6">
+            <Link href="/" className="flex items-center gap-2 text-primary">
               <IconArrowLeft size={20} /> Back To Home
             </Link>
-            <h3 className="h3 my-4">Welcome Back!</h3>
-            <p className="md:mb-6 md:pb-6 mb-4 pb-4 bb-dashed text-sm md:text-base">
+
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">Welcome Back!</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm">
               Sign in to your account and join us
             </p>
-            <label
-              htmlFor="email"
-              className="md:text-lg font-medium block mb-4">
-              Enter Your Email ID
-            </label>
-            <input
-              type="email"
-              className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 md:px-6 py-2 md:py-3 mb-5"
-              placeholder="Enter Your Email"
-              id="email"
-              required
-            />
-            <label
-              htmlFor="password"
-              className="md:text-lg font-medium block mb-4">
-              Enter Your Password
-            </label>
-            <div className=" bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 md:px-6 py-2 md:py-3 mb-4 relative">
+
+            {/* Email Input */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Email Address
+              </label>
               <input
-                type={showPass ? "text" : "password"}
-                className="w-11/12 text-sm focus:outline-none bg-transparent"
-                placeholder="Enter Your Password"
-                id="password"
+                type="email"
+                id="email"
+                className="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-bg4 dark:border-n500 dark:text-white"
+                placeholder="Enter Your Email"
                 required
               />
-              <span
-                onClick={() => setShowPass(!showPass)}
-                className="absolute ltr:right-5 rtl:left-5 top-1/2 -translate-y-1/2 cursor-pointer">
-                {showPass ? <IconEye /> : <IconEyeOff />}
-              </span>
             </div>
 
-            <Link href="#" className="flex justify-end text-primary text-sm">
-              Forgot Password
-            </Link>
-            <p className="mt-3">
-              Don&apos;t have an account?{" "}
-              <Link className="text-primary" href="/signup-1">
-                Signup
+            {/* Password Input */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Password
+              </label>
+              <div className="relative mt-2">
+                <input
+                  type={showPass ? "text" : "password"}
+                  id="password"
+                  className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-bg4 dark:border-n500 dark:text-white"
+                  placeholder="Enter Your Password"
+                  required
+                />
+                <span
+                  onClick={() => setShowPass(!showPass)}
+                  className="absolute inset-y-0 right-4 flex items-center cursor-pointer text-gray-500 hover:text-primary"
+                >
+                  {showPass ? <IconEye /> : <IconEyeOff />}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center text-sm">
+              <Link href="#" className="text-primary hover:underline">
+                Forgot Password?
               </Link>
-            </p>
-            <div className="mt-8 flex gap-6">
-              <button className="btn px-5">Login</button>
+              <p>
+                Don&apos;t have an account?{' '}
+                <Link href="/signup-1" className="text-primary hover:underline">
+                  Signup
+                </Link>
+              </p>
+            </div>
+
+            <div className="pt-4">
+              <button
+                type="submit"
+                className="w-full py-2 px-4 text-white bg-primary hover:bg-primary-dark rounded-lg focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all"
+              >
+                Login
+              </button>
             </div>
           </form>
         </div>
-      </div>
-      <div className="col-span-2 lg:col-span-1 flex items-center justify-center">
+      </motion.div>
+
+      {/* Right Section */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        className="hidden lg:flex items-center justify-center"
+      >
         <Image
-          src="/images/login-1.png"
-          className="relative z-[2] px-4"
-          alt="img"
-          width={696}
-          height={547}
+          src="/images/login-main.png"
+          alt="Login Illustration"
+          width={600}
+          height={500}
+          className="rounded-lg shadow-lg"
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
