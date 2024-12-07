@@ -12,7 +12,6 @@ const BooksPage = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Simulate fetching saved books for the logged-in user
   useEffect(() => {
     const fetchBooks = async () => {
       // Replace this with your API call to fetch books
