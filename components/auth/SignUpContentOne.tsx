@@ -10,42 +10,26 @@ const SignupContentOne = () => {
           <form className="box bg-primary/5 dark:bg-bg3 lg:p-6 xl:p-8">
             <h3 className="h3 mb-4">Let&apos;s Get Started!</h3>
             <p className="md:mb-6 pb-4 mb-4 md:pb-6 bb-dashed text-sm md:text-base">
-              Please Enter your Email Address to Start your Online Application
+              Please Enter Your Details to Create an Account
             </p>
-            <div className="grid grid-cols-2 gap-x-4 xxxl:gap-x-6">
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  htmlFor="name"
-                  className="md:text-lg font-medium block mb-3">
-                  First Name
-                </label>
-                <input
-                  type="name"
-                  className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-5"
-                  placeholder="Jone"
-                  id="name"
-                  required
-                />
-              </div>
-              <div className="col-span-2 md:col-span-1">
-                <label
-                  htmlFor="lname"
-                  className="md:text-lg font-medium block mb-3">
-                  Last Name
-                </label>
-                <input
-                  type="lname"
-                  className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-5"
-                  placeholder="Doe"
-                  id="lname"
-                  required
-                />
-              </div>
-            </div>
+
+            <label
+              htmlFor="fullName"
+              className="md:text-lg font-medium block mb-4">
+              Full Name
+            </label>
+            <input
+              type="text"
+              className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-5"
+              placeholder="Enter Your Full Name"
+              id="fullName"
+              required
+            />
+
             <label
               htmlFor="email"
               className="md:text-lg font-medium block mb-4">
-              Enter Your Email ID
+              Email Address
             </label>
             <input
               type="email"
@@ -54,21 +38,32 @@ const SignupContentOne = () => {
               id="email"
               required
             />
-            <label
-              htmlFor="referralcode"
-              className="md:text-lg font-medium block mb-4">
-              Someone invited you over?
-            </label>
-            <div className=" bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-7 relative">
-              <input
-                type="text"
-                className="w-full text-sm bg-transparent focus:outline-none"
-                placeholder="Enter the referral code"
-                id="referralcode"
-                required
-              />
-            </div>
 
+            <label
+              htmlFor="password"
+              className="md:text-lg font-medium block mb-4">
+              Password
+            </label>
+            <input
+              type="password"
+              className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-5"
+              placeholder="Enter Your Password"
+              id="password"
+              required
+            />
+
+            <label
+              htmlFor="confirmPassword"
+              className="md:text-lg font-medium block mb-4">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              className="w-full text-sm focus:outline-none bg-n0 dark:bg-bg4 border border-n30 dark:border-n500 rounded-3xl px-3 py-2 md:px-6 md:py-3 mb-5"
+              placeholder="Confirm Your Password"
+              id="confirmPassword"
+              required
+            />
             <p>
               By clicking submit, you agree to{" "}
               <Link className="text-primary" href="#">
