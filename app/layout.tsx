@@ -12,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboi - Multipurpose Nextjs Tailwindcss admin Dashboard",
-  description: "Dashboi - Multipurpose Nextjs Tailwindcss admin Dashboard",
-  keywords: ["Next.js", "React", "JavaScript", "Dashboard"],
+  title: "Project Gutenberg Book Explorer",
+  description: "Project Gutenberg Book Explorer",
+  keywords: ["Gutenberg Book", "Gutenberg Book Analyzer", "Gutenberg", "Book Analyzer"],
 };
 
 export default function RootLayout({
