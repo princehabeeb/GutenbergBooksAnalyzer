@@ -117,22 +117,22 @@ const Navbar = () => {
           className={`lg:flex z-20 items-center gap-4 absolute top-full lg:static ${
             menuOpen
               ? "bg-n0 dark:bg-bg4 w-full left-0 right-0 p-4 flex text-start translate-x-0 justify-start max-lg:flex-col"
-              : "max-lg:hidden max-lg:-translate-x-full"
+              : "max-lg:hidden font-bold max-lg:-translate-x-full"
           }`}>
           <li>
-            <Link href="#pages">Prebuilt Pages</Link>
+            <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="#layouts">Layouts</Link>
+            <Link href="/login">Login</Link>
           </li>
           <li>
-            <Link href="#faqs">Faqs</Link>
+            <Link href="/signup">Signup</Link>
           </li>
         </ul>
         <div className="flex items-center gap-4">
           <ModeSwitcher isBlue={true} />
           <Link className="btn max-md:hidden" href="#">
-            Buy Dashboi <IconArrowUpRight />
+            Saved List <IconArrowUpRight />
           </Link>
         </div>
         <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden">
