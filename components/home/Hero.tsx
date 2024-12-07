@@ -26,7 +26,6 @@ interface Book {
 ReactModal.setAppElement("#modal-root");
 
 
-
 const Hero = () => {
   const { theme } = useTheme();
   const [bookID, setBookID] = useState("");
@@ -146,24 +145,37 @@ const Hero = () => {
             </div>
             <div className="mt-8 grid grid-cols-1  gap-4">
               {books.map((book, idx) => (
-                <div key={idx} className="p-4 bg-white rounded shadow mb-4">
-                  <h2 className="font-bold">{book.title}</h2>
-                  <p>{book.isFullContentShown ? book.content : book.content.slice(0, 100) + "..."}</p>
-                  <div className="flex justify-end mt-4 space-x-4">
-                    <button
-                      onClick={() => toggleContent(idx)}
-                      className="text-blue-500 flex items-center"
-                    >
-                      <IconBook className="mr-1" /> {book.isFullContentShown ? "Show Less" : "Show More"}
-                    </button>
-                    <button
-                      onClick={() => analyzeText(book)}
-                      className="text-purple-500 flex items-center"
-                    >
-                      <IconTex className="mr-1" /> Analyze
-                    </button>
-                  </div>
-                </div>
+               <div
+               key={idx}
+               className={`p-4 rounded shadow mb-4 ${
+                 theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
+               }`}
+             >
+               <h2 className="font-bold">{book.title}</h2>
+               <p>
+                 {book.isFullContentShown
+                   ? book.content
+                   : book.content.slice(0, 100) + "..."}
+               </p>
+               <div className="flex justify-end mt-4 space-x-4">
+                 <button
+                   onClick={() => toggleContent(idx)}
+                   className={`flex items-center ${
+                     theme === "dark" ? "text-blue-400" : "text-blue-500"
+                   }`}
+                 >
+                   <IconBook className="mr-1" /> {book.isFullContentShown ? "Show Less" : "Show More"}
+                 </button>
+                 <button
+                   onClick={() => analyzeText(book)}
+                   className={`flex items-center ${
+                     theme === "dark" ? "text-purple-400" : "text-purple-500"
+                   }`}
+                 >
+                   <IconTex className="mr-1" /> Analyze
+                 </button>
+               </div>
+             </div>             
               ))}
             </div>
           </div>
