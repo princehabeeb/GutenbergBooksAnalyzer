@@ -119,6 +119,21 @@ const Hero = () => {
     setAnalysisResults(null);
   };
 
+  const handleSave = (book: Book) => {
+    const token = localStorage.getItem("jwt_token");
+  
+    if (token) {
+      // Logic to save the book (e.g., API request)
+      toast.success(`"${book.title}" has been saved successfully!`);
+    } else {
+      toast.error("You must be logged in to save books.");
+      setTimeout(() => {
+        window.location.href = "/login"; 
+      }, 1000);
+    }
+  };
+  
+
   return (
     <div className=" bg-cover bg-no-repeat relative">
       <ToastContainer />
@@ -143,39 +158,48 @@ const Hero = () => {
                 <span className="ml-2 hidden md:block">Fetch Book</span>
               </button>
             </div>
-            <div className="mt-8 grid grid-cols-1  gap-4">
+            <div className="mt-8 grid grid-cols-1 gap-4">
               {books.map((book, idx) => (
-               <div
-               key={idx}
-               className={`p-4 rounded shadow mb-4 ${
-                 theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
-               }`}
-             >
-               <h2 className="font-bold">{book.title}</h2>
-               <p>
-                 {book.isFullContentShown
-                   ? book.content
-                   : book.content.slice(0, 100) + "..."}
-               </p>
-               <div className="flex justify-end mt-4 space-x-4">
-                 <button
-                   onClick={() => toggleContent(idx)}
-                   className={`flex items-center ${
-                     theme === "dark" ? "text-blue-400" : "text-blue-500"
-                   }`}
-                 >
-                   <IconBook className="mr-1" /> {book.isFullContentShown ? "Show Less" : "Show More"}
-                 </button>
-                 <button
-                   onClick={() => analyzeText(book)}
-                   className={`flex items-center ${
-                     theme === "dark" ? "text-purple-400" : "text-purple-500"
-                   }`}
-                 >
-                   <IconTex className="mr-1" /> Analyze
-                 </button>
-               </div>
-             </div>             
+                <div
+                  key={idx}
+                  className={`p-4 rounded shadow mb-4 ${
+                    theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
+                  }`}
+                >
+                  <h2 className="font-bold">{book.title}</h2>
+                  <p>
+                    {book.isFullContentShown
+                      ? book.content
+                      : book.content.slice(0, 100) + "..."}
+                  </p>
+                  <div className="flex justify-end mt-4 space-x-4">
+                    <button
+                      onClick={() => toggleContent(idx)}
+                      className={`flex items-center ${
+                        theme === "dark" ? "text-blue-400" : "text-blue-500"
+                      }`}
+                    >
+                      <IconBook className="mr-1" />{" "}
+                      {book.isFullContentShown ? "Show Less" : "Show More"}
+                    </button>
+                    <button
+                      onClick={() => analyzeText(book)}
+                      className={`flex items-center ${
+                        theme === "dark" ? "text-purple-400" : "text-purple-500"
+                      }`}
+                    >
+                      <IconTex className="mr-1" /> Analyze
+                    </button>
+                    <button
+                      onClick={() => handleSave(book)}
+                      className={`flex items-center ${
+                        theme === "dark" ? "text-green-400" : "text-green-500"
+                      }`}
+                    >
+                      <IconBookmark className="mr-1" /> Save
+                    </button>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
