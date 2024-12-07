@@ -75,7 +75,7 @@ const LoginOneContent = () => {
               </Link>
               <p>
                 Don&apos;t have an account?{' '}
-                <Link href="/signup-1" className="text-primary hover:underline">
+                <Link href="/signup" className="text-primary hover:underline">
                   Signup
                 </Link>
               </p>
