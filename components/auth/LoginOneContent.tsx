@@ -104,7 +104,7 @@ const LoginOneContent = () => {
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm">
+            <div className="flex flex-col justify-between items-center text-sm">
               <Link href="#" className="text-primary hover:underline">
                 Forgot Password?
               </Link>
