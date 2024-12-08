@@ -1,21 +1,9 @@
-import PageContentMap2 from "@/components/maps/PageContentMap2";
-import Banner from "@/components/shared/Banner";
-import Link from "next/link";
+import React from 'react'
 
-const MapStyle1Page = () => {
+const page = () => {
   return (
-    <>
-      <Banner
-        title="Map Style 02"
-        links={
-          <Link href="#" className="btn">
-            Project Analytics
-          </Link>
-        }
-      />
-      <PageContentMap2 />
-    </>
-  );
-};
+    <div>page</div>
+  )
+}
 
-export default MapStyle1Page;
+export default page
