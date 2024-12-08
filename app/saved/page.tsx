@@ -1,30 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
 import { useTheme } from "next-themes";
 import Navbar from "@/components/home/Navbar";
+import { useRouter } from "next/navigation";
 
 interface Book {
-  id: number;
+  _id: string;
   title: string;
-  author: string;
+  metadata: string;
+  content: string;
 }
 
 const BooksPage = () => {
   const { theme } = useTheme();
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
+  const route = useRouter();
 
   useEffect(() => {
     const fetchBooks = async () => {
-      // Replace this with your API call to fetch books
-      const userBooks = [
-        { id: 1, title: "Pride and Prejudice", author: "Jane Austen" },
-        { id: 2, title: "1984", author: "George Orwell" },
-        { id: 3, title: "Moby Dick", author: "Herman Melville" },
-      ];
-      setBooks(userBooks);
-      setLoading(false);
+      try {
+        const token = localStorage.getItem("gutenberg-auth-token");
+        if (!token) {
+          throw new Error("Authentication token not found.");
+        }
+
+        const response = await axios.get("http://localhost:5000/api/books", {
+          headers: { "gutenberg-auth-token": token },
+        });
+
+        const fetchedBooks = response.data.books || [];
+        setBooks(fetchedBooks);
+      } catch (error) {
+        route.push("/login");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchBooks();
@@ -51,27 +64,36 @@ const BooksPage = () => {
         transition={{ duration: 0.5 }}
         className="max-w-4xl mt-[100px] mx-auto"
       >
-        <h1 className="text-3xl font-bold mb-6">
-          Your Saved Books
-        </h1>
+        <h1 className="text-3xl font-bold mb-6">Your Saved Books</h1>
         {books.length === 0 ? (
           <p className="text-gray-600 dark:text-gray-400">No books saved yet.</p>
         ) : (
           <ul className="space-y-4">
             {books.map((book) => (
               <motion.li
-                key={book.id}
+                key={book._id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * book.id }}
+                transition={{ delay: 0.1 }}
                 className="p-4 bg-white dark:bg-gray-800 shadow rounded-lg"
               >
-                <h2 className="text-xl font-semibold">
-                  {book.title}
-                </h2>
+                <h2 className="text-xl font-semibold">{book.title}</h2>
                 <p className="text-gray-600 dark:text-gray-400">
-                  by {book.author}
+                  <a
+                    href={book.metadata}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    View Metadata
+                  </a>
                 </p>
+                <button
+                  onClick={() => alert(`Analyzing book: ${book.title}`)}
+                  className="mt-2 inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                >
+                  Analyze Book
+                </button>
               </motion.li>
             ))}
           </ul>

@@ -13,7 +13,7 @@ const LoginOneContent = () => {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false); 
   const route = useRouter();
 
   const fadeIn = {
@@ -23,7 +23,7 @@ const LoginOneContent = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true
+    setLoading(true); 
 
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
