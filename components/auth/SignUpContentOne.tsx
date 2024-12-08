@@ -64,39 +64,11 @@ const SignupContentOne = () => {
               id="confirmPassword"
               required
             />
-            <p>
-              By clicking submit, you agree to{" "}
-              <Link className="text-primary" href="#">
-                Terms of Use
-              </Link>
-              ,{" "}
-              <Link className="text-primary" href="#">
-                Privacy Policy
-              </Link>
-              ,{" "}
-              <Link className="text-primary" href="#">
-                E-sign
-              </Link>{" "}
-              &{" "}
-              <Link className="text-primary" href="#">
-                Communication Authorization
-              </Link>
-              .
-            </p>
             <div className="mt-8">
               <button className="btn px-5">Sign Up</button>
             </div>
           </form>
         </div>
-      </div>
-      <div className="col-span-2 lg:col-span-1 flex items-center justify-center">
-        <Image
-          src="/images/signup-1.png"
-          className="relative z-[2] px-4"
-          alt="img"
-          width={696}
-          height={547}
-        />
       </div>
     </div>
   );
