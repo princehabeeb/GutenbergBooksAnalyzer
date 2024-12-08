@@ -112,9 +112,9 @@ const LoginOneContent = () => {
             </div>
 
             <div className="flex flex-col justify-between items-center text-sm">
-              <Link href="#" className="text-primary hover:underline">
+              {/* <Link href="#" className="text-primary hover:underline">
                 Forgot Password?
-              </Link>
+              </Link> */}
               <p>
                 Don&apos;t have an account?{" "}
                 <Link href="/signup" className="text-primary hover:underline">
