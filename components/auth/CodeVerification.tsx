@@ -2,12 +2,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const CodeVerification = () => {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const route = useRouter();
 
   const handleSubmit = async () => {
     setError("");
@@ -19,6 +21,7 @@ const CodeVerification = () => {
         otp,
       });
       setSuccess(response.data.message || "Verification successful!");
+      route.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "An error occurred. Please try again.");
