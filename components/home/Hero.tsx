@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { log } from "console";
+import {franc} from "franc-min";
 
 interface Book {
   title: string;
@@ -23,7 +23,6 @@ interface Book {
 }
 
 ReactModal.setAppElement("#modal-root");
-
 
 const Hero = () => {
   const { theme } = useTheme();
@@ -98,17 +97,12 @@ const Hero = () => {
 
   const analyzeText = async (book: Book) => {
     setSelectedBook(book);
-    setIsModalOpen(true);
+    // setIsModalOpen(true);
 
     try {
-      toast.info(`Analyzing text of "${book.title}"...`);
-      const response = await axios.post("https://groq.com/analyze", {
-        text: book.content,
-      });
-
-      setAnalysisResults(response.data);
+      const detectedLanguage = franc(book.content);
+      alert(`The detected language of the book is: ${detectedLanguage}`);
     } catch (err) {
-      toast.error("Error analyzing text. Please try again.");
       console.error(err);
     }
   };
@@ -154,9 +148,6 @@ const Hero = () => {
       toast.error("An error occurred while saving the book.");
     }
   };
-  
-  
-  
 
   return (
     <div className=" bg-cover bg-no-repeat relative">
