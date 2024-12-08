@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { log } from "console";
 
 interface Book {
   title: string;
@@ -123,7 +124,7 @@ const Hero = () => {
     if (!token) {
       toast.error("You must be logged in to save books.");
       setTimeout(() => {
-        window.location.href = "/login"; 
+        window.location.href = "/login";
       }, 1000);
       return;
     }
@@ -138,12 +139,12 @@ const Hero = () => {
         },
         {
           headers: {
-            Authorization:token,
+            "gutenberg-auth-token": token,
           },
         }
       );
   
-      if (response.status === 200) {
+      if (response.status === 200 || response.status === 201 ) {
         toast.success(`"${book.title}" has been saved successfully!`);
       } else {
         toast.error("Failed to save the book. Please try again.");
@@ -153,6 +154,7 @@ const Hero = () => {
       toast.error("An error occurred while saving the book.");
     }
   };
+  
   
   
 
