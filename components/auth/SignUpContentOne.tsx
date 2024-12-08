@@ -39,7 +39,7 @@ const SignupContentOne = () => {
       });
 
       toast.success("Signup successful! Redirecting to verify-code page.");
-      router.push("/verify-code");
+      router.push("/code-verification");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // AxiosError handling

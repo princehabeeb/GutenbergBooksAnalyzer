@@ -1,61 +1,89 @@
 "use client";
-import { IconArrowLeft } from "@tabler/icons-react";
-import Image from "next/image";
 import { useState } from "react";
-import OTPInput from "react-otp-input";
+import { motion } from "framer-motion";
+import axios from "axios";
 
 const CodeVerification = () => {
+  const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
-  return (
-    <div className="min-h-screen grid grid-cols-12 gap-5 relative xxl:after:absolute xxl:after:w-1/2 py-10 lg:py-20 after:h-full xxl:after:bg-primary/5 lg:dark:after:bg-bg3 ltr:after:left-0 rtl:after:right-0 after:top-0">
-      <div className="col-span-12 lg:col-span-5 xxl:col-span-6 flex items-center justify-center">
-        <Image
-          src="/images/forgot-pass.png"
-          className="relative z-[2] px-4"
-          alt="img"
-          width={696}
-          height={648}
-        />
-      </div>
-      <div className="col-span-12 lg:col-span-7 xxl:col-span-6  flex items-center justify-center px-5 md:px-10">
-        <div className="box xl:p-4 mx-3">
-          <div className="box bg-primary/5 dark:bg-bg3 lg:p-6 xl:p-8 max-w-[696px]">
-            <h3 className="h3 mb-4">Verify Your Phone Number</h3>
-            <p className="mb-6 pb-6 bb-dashed">
-              A 6 digit One Time Password (OTP) has been sent to your given
-              email address which will expire in 15 minutes, after which you
-              will need to resend the code.
-            </p>
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-            <label
-              htmlFor="number"
-              className="md:text-lg font-medium block mb-4">
-              Enter OTP Here
-            </label>
-            <OTPInput
-              value={otp}
-              onChange={setOtp}
-              containerStyle="flex gap-1 sm:gap-2 xl:gap-3 xxxl:gap-4"
-              inputStyle="py-2 px-2 lg:px-5 rounded-lg lg:rounded-[30px] !w-8 xl:!w-12 sm:!w-16 xxl:!w-20 bg-n0 xxxl:!w-24 dark:bg-bg4 inline-block focus:outline-none"
-              numInputs={6}
-              inputType="number"
-              renderInput={(props) => <input {...props} />}
-            />
-            <button className="mb-2 font-semibold mt-6 lg:mt-10">
-              Resend Code
-            </button>
-            <div className="my-5 lg:my-8">
-              <button className="btn">Submit Now</button>
-            </div>
-            <button
-              onClick={() => window.history.back()}
-              className="flex items-center gap-1">
-              <IconArrowLeft /> Back
-            </button>
-          </div>
+  const handleSubmit = async () => {
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/verify-email", {
+        email,
+        otp,
+      });
+      setSuccess(response.data.message || "Verification successful!");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        // Axios error handling
+        setError(err.response?.data?.message || "An error occurred. Please try again.");
+      } else if (err instanceof Error) {
+        // Generic error handling
+        setError(err.message);
+      } else {
+        setError("An unexpected error occurred.");
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      className="min-h-screen flex flex-col justify-center items-center px-4"
+    >
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 space-y-6">
+        <h3 className="text-xl font-semibold text-center">Verify Your Email</h3>
+        <p className="text-gray-600 text-center">
+          Enter your email and the OTP code sent to your email address.
+        </p>
+
+        {error && <p className="text-red-500 text-center">{error}</p>}
+        {success && <p className="text-green-500 text-center">{success}</p>}
+
+        <div>
+          <label htmlFor="email" className="block text-sm font-medium mb-2">
+            Email Address
+          </label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+            placeholder="Enter your email"
+          />
         </div>
+
+        <div>
+          <label htmlFor="otp" className="block text-sm font-medium mb-2">
+            OTP Code
+          </label>
+          <input
+            type="text"
+            id="otp"
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+            placeholder="Enter OTP code"
+          />
+        </div>
+
+        <button
+          onClick={handleSubmit}
+          className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300"
+        >
+          Submit
+        </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
