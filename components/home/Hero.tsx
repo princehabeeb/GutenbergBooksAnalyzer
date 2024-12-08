@@ -1,8 +1,6 @@
 "use client";
 import ReactModal from "react-modal";
 import {
-  IconArrowUpRight,
-  IconMenu2,
   IconSearch,
   IconLoader,
   IconBook,
@@ -119,19 +117,43 @@ const Hero = () => {
     setAnalysisResults(null);
   };
 
-  const handleSave = (book: Book) => {
-    const token = localStorage.getItem("jwt_token");
+  const handleSave = async (book: Book) => {
+    const token = localStorage.getItem("gutenberg-auth-token");
   
-    if (token) {
-      // Logic to save the book (e.g., API request)
-      toast.success(`"${book.title}" has been saved successfully!`);
-    } else {
+    if (!token) {
       toast.error("You must be logged in to save books.");
       setTimeout(() => {
         window.location.href = "/login"; 
       }, 1000);
+      return;
+    }
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/books",
+        {
+          title: book.title,
+          metadata: book.metadata,
+          content: book.content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        toast.success(`"${book.title}" has been saved successfully!`);
+      } else {
+        toast.error("Failed to save the book. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred while saving the book.");
     }
   };
+  
   
 
   return (
