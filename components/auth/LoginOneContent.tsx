@@ -6,14 +6,16 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginOneContent = () => {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
   const route = useRouter();
+
   const fadeIn = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
@@ -21,25 +23,26 @@ const LoginOneContent = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+    setLoading(true); // Set loading to true
+
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
-  
+
       const { token } = response.data;
       localStorage.setItem("gutenberg-auth-token", token);
       toast.success("Login successful!");
-      console.log("Navigating to /saved..."); // Debugging log
-      route.push('/saved'); // Corrected navigation
+      route.push("/saved");
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || "An error occurred. Please try again.";
       toast.error(errorMessage);
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
-  
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-5 py-10 lg:py-20 relative">
@@ -123,9 +126,38 @@ const LoginOneContent = () => {
             <div className="pt-4">
               <button
                 type="submit"
-                className="w-full py-2 px-4 text-white bg-primary hover:bg-primary-dark rounded-lg focus:ring-2 focus:ring-primary focus:ring-opacity-50 transition-all"
+                disabled={loading} // Disable button during loading
+                className={`w-full py-2 px-4 text-white bg-primary rounded-lg focus:ring-2 focus:ring-primary ${
+                  loading ? "cursor-not-allowed opacity-50" : "hover:bg-primary-dark"
+                }`}
               >
-                Login
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <svg
+                      className="animate-spin h-5 w-5 mr-2 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      ></path>
+                    </svg>
+                    Loading...
+                  </span>
+                ) : (
+                  "Login"
+                )}
               </button>
             </div>
           </form>
