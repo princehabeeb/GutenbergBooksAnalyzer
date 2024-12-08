@@ -4,18 +4,41 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginOneContent = () => {
   const [showPass, setShowPass] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const fadeIn = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
 
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+      localStorage.setItem("gutenberg-auth-token", token);
+      toast.success("Login successful!");
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || "An error occurred. Please try again.";
+      toast.error(errorMessage);
+    }
+  };
+
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-5 py-10 lg:py-20 relative">
-      {/* Left Section */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -23,24 +46,31 @@ const LoginOneContent = () => {
         className="flex items-center justify-center px-5 md:px-10 xl:px-20 xxl:px-28"
       >
         <div className="box w-full p-6 md:p-8 bg-white dark:bg-bg3 shadow-lg rounded-lg">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleLogin}>
             <Link href="/" className="flex items-center gap-2 text-primary">
               <IconArrowLeft size={20} /> Back To Home
             </Link>
 
-            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">Welcome Back!</h3>
+            <h3 className="text-2xl font-bold text-gray-800 dark:text-white">
+              Welcome Back!
+            </h3>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               Sign in to your account and join us
             </p>
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Email Address
               </label>
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="w-full mt-2 px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-bg4 dark:border-n500 dark:text-white"
                 placeholder="Enter Your Email"
                 required
@@ -49,13 +79,18 @@ const LoginOneContent = () => {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
                 Password
               </label>
               <div className="relative mt-2">
                 <input
                   type={showPass ? "text" : "password"}
                   id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-primary focus:border-primary dark:bg-bg4 dark:border-n500 dark:text-white"
                   placeholder="Enter Your Password"
                   required
@@ -74,7 +109,7 @@ const LoginOneContent = () => {
                 Forgot Password?
               </Link>
               <p>
-                Don&apos;t have an account?{' '}
+                Don&apos;t have an account?{" "}
                 <Link href="/signup" className="text-primary hover:underline">
                   Signup
                 </Link>
@@ -92,8 +127,6 @@ const LoginOneContent = () => {
           </form>
         </div>
       </motion.div>
-
-      {/* Right Section */}
       <motion.div
         initial="hidden"
         animate="visible"
