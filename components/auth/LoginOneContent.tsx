@@ -6,13 +6,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
+import {useRouter} from 'next/navigation'
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginOneContent = () => {
   const [showPass, setShowPass] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const route = useRouter();
   const fadeIn = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
@@ -20,22 +21,25 @@ const LoginOneContent = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+  
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
-
+  
       const { token } = response.data;
       localStorage.setItem("gutenberg-auth-token", token);
       toast.success("Login successful!");
+      console.log("Navigating to /saved..."); // Debugging log
+      route.push('/saved'); // Corrected navigation
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || "An error occurred. Please try again.";
       toast.error(errorMessage);
     }
   };
+  
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-5 py-10 lg:py-20 relative">
