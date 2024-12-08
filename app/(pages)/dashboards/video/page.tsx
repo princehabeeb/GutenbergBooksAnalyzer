@@ -1,21 +1,9 @@
-import Banner from "@/components/shared/Banner";
-import VideoContent from "@/components/video/VideoContent";
-import Link from "next/link";
+import React from 'react'
 
-const HealthPage = () => {
+const page = () => {
   return (
-    <>
-      <Banner
-        title="Video"
-        links={
-          <Link href="#" className="btn">
-            Add Video
-          </Link>
-        }
-      />
-      <VideoContent />
-    </>
-  );
-};
+    <div>page</div>
+  )
+}
 
-export default HealthPage;
+export default page

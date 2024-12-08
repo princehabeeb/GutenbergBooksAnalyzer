@@ -1,21 +1,9 @@
-import Banner from "@/components/shared/Banner";
-import WriterPageContent from "@/components/writer/WriterPageContent";
-import Link from "next/link";
+import React from 'react'
 
-const HealthPage = () => {
+const page = () => {
   return (
-    <>
-      <Banner
-        title="Writer"
-        links={
-          <Link href="#" className="btn">
-            Add Article
-          </Link>
-        }
-      />
-      <WriterPageContent />
-    </>
-  );
-};
+    <div>page</div>
+  )
+}
 
-export default HealthPage;
+export default page
