@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 const SignupContentOne = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Loading state
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -18,12 +19,12 @@ const SignupContentOne = () => {
 
   const router = useRouter();
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = async (e:any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -31,23 +32,27 @@ const SignupContentOne = () => {
       return;
     }
 
+    setIsLoading(true); // Start loading
     try {
-      const response = await axios.post("https://gutenbergbooksanalyzerapi.onrender.com/api/auth/signup", {
-        fullName: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        "https://gutenbergbooksanalyzerapi.onrender.com/api/auth/signup",
+        {
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
 
       toast.success("Signup successful! Redirecting to verify-code page.");
       router.push("/code-verification");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // AxiosError handling
         toast.error("An error occurred during signup");
       } else {
-        // Generic error handling
         toast.error("An unexpected error occurred");
       }
+    } finally {
+      setIsLoading(false); // End loading
     }
   };
 
@@ -150,8 +155,9 @@ const SignupContentOne = () => {
               <button
                 type="submit"
                 className="px-6 py-3 w-full text-sm font-semibold text-white bg-primary rounded-lg shadow-lg hover:bg-primary/90 focus:ring-4 focus:ring-primary/50 transition duration-300"
+                disabled={isLoading} // Disable button when loading
               >
-                Sign Up
+                {isLoading ? "Signing Up..." : "Sign Up"}
               </button>
             </div>
           </form>
