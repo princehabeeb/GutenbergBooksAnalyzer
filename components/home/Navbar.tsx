@@ -4,10 +4,11 @@ import logoIcon from "@/public/images/logoicon.png";
 import { IconArrowUpRight, IconMenu2, IconSearch } from "@tabler/icons-react";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useLayoutEffect, useRef, useState } from "react";
 import ModeSwitcher from "../navbar/ModeSwitcher";
 import { demoData } from "./demodata";
+
 type ResultType = {
   id: number;
   title: string;
@@ -16,24 +17,21 @@ type ResultType = {
   category: string;
   url: string;
 };
+
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchResult, setSearchResult] = useState<ResultType[]>([]);
+  const router = useRouter(); // For programmatic navigation
+  const isLoggedIn = false; // Simulate authentication. Replace with real logic.
 
   useLayoutEffect(() => {
-    window.addEventListener("scroll", function () {
-      if (this.window.scrollY > 120) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+    window.addEventListener("scroll", () => {
+      setScrolled(window.scrollY > 120);
     });
   }, []);
 
   const searchContainerRef = useRef<HTMLDivElement | null>(null);
-
-  // ... existing code ...
 
   useLayoutEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,8 +39,7 @@ const Navbar = () => {
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target as Node)
       ) {
-        // Clicked outside the search container, hide the results
-        setSearchResult([]);
+        setSearchResult([]); // Clear search results if clicked outside
       }
     };
 
@@ -52,6 +49,7 @@ const Navbar = () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const searchTerm = e.target.value.toLowerCase();
     if (!searchTerm.trim()) {
@@ -64,9 +62,18 @@ const Navbar = () => {
         desc.toLowerCase().includes(searchTerm)
     );
     setSearchResult(result);
-    console.log(searchResult);
   };
+
+  const handleSavedListClick = () => {
+    if (!isLoggedIn) {
+      router.push("/login"); // Redirect to login if not authenticated
+    } else {
+      router.push("/saved-list"); // Redirect to saved list if authenticated
+    }
+  };
+
   const path = usePathname();
+
   return (
     <div
       className={`fixed top-0 w-full max-lg:bg-n0 dark:max-lg:bg-bg4 max-lg:shadow-lg z-10 ${
@@ -83,7 +90,7 @@ const Navbar = () => {
               className={`bg-n0 dark:bg-bg4 shrink-0 ${
                 scrolled ? "bg-primary/5 dark:bg-bg4" : "bg-n0 "
               } ${
-                path == "/demos" && "bg-primary/5"
+                path === "/demos" && "bg-primary/5"
               }  flex gap-3 rounded-[30px] border max-md:border-n30 lg:border-transparent px-3 xl:px-5 xxl:px-6 items-center justify-between xxl:w-[336px]`}>
               <input
                 type="text"
@@ -94,7 +101,7 @@ const Navbar = () => {
               />
               <IconSearch />
             </form>
-            {searchResult.length > 0 ? (
+            {searchResult.length > 0 && (
               <div
                 className={`absolute top-[110%] left-0 max-h-[350px] overflow-y-auto right-0 p-1 rounded-lg flex flex-col bg-n0 dark:bg-bg4`}>
                 {searchResult.map(({ id, desc, title, url }) => (
@@ -107,8 +114,6 @@ const Navbar = () => {
                   </Link>
                 ))}
               </div>
-            ) : (
-              ""
             )}
           </div>
         </div>
@@ -131,9 +136,11 @@ const Navbar = () => {
         </ul>
         <div className="flex items-center gap-4">
           <ModeSwitcher isBlue={true} />
-          <Link className="btn max-md:hidden" href="#">
+          <button
+            className="btn max-md:hidden"
+            onClick={handleSavedListClick}>
             Saved List <IconArrowUpRight />
-          </Link>
+          </button>
         </div>
         <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden">
           <IconMenu2 />
