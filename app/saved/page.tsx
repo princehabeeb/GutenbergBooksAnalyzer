@@ -30,7 +30,7 @@ const BooksPage = () => {
           throw new Error("Authentication token not found.");
         }
 
-        const response = await axios.get("http://localhost:5000/api/books", {
+        const response = await axios.get("https://gutenbergbooksanalyzerapi.onrender.com/api/books", {
           headers: { "gutenberg-auth-token": token },
         });
 

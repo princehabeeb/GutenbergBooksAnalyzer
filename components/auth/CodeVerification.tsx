@@ -16,7 +16,7 @@ const CodeVerification = () => {
     setSuccess("");
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/verify-email", {
+      const response = await axios.post("https://gutenbergbooksanalyzerapi.onrender.com/api/auth/verify-email", {
         email,
         otp,
       });

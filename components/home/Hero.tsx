@@ -48,10 +48,10 @@ const Hero = () => {
 
     setIsLoading(true);
 
-    const contentUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(
+    const contentUrl = `https://gutenbergbooksanalyzerapi.onrender.com/api/proxy?url=${encodeURIComponent(
       `https://www.gutenberg.org/files/${bookID}/${bookID}-0.txt`
     )}`;
-    const metadataUrl = `http://localhost:5000/api/proxy?url=${encodeURIComponent(
+    const metadataUrl = `https://gutenbergbooksanalyzerapi.onrender.com/api/proxy?url=${encodeURIComponent(
       `https://www.gutenberg.org/ebooks/${bookID}`
     )}`;
 
@@ -127,7 +127,7 @@ const Hero = () => {
   
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/books",
+        "https://gutenbergbooksanalyzerapi.onrender.com/api/books",
         {
           title: book.title,
           metadata: book.metadata,
