@@ -5,6 +5,7 @@ import axios from "axios";
 import { useTheme } from "next-themes";
 import Navbar from "@/components/home/Navbar";
 import { useRouter } from "next/navigation";
+import {franc} from "franc-min";
 
 interface Book {
   _id: string;
@@ -18,6 +19,7 @@ const BooksPage = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const route = useRouter();
+  const [selectedBook, setSelectedBook] = useState<Book | null>(null)
 
   useEffect(() => {
     const fetchBooks = async () => {
@@ -51,13 +53,26 @@ const BooksPage = () => {
     );
   }
 
+  const analyzeText = async (book: Book) => {
+    setSelectedBook(book);
+    // setIsModalOpen(true);
+
+    try {
+      const detectedLanguage = franc(book.content);
+      alert(`The detected language of the book is: ${detectedLanguage}`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
+    <>
+    <Navbar />
     <div
       className={`min-h-screen p-4 ${
         theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-gray-100 text-gray-900"
       }`}
     >
-      <Navbar />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -89,10 +104,10 @@ const BooksPage = () => {
                   </a>
                 </p>
                 <button
-                  onClick={() => alert(`Analyzing book: ${book.title}`)}
+                  onClick={() => analyzeText(book)}
                   className="mt-2 inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
-                  Analyze Book
+                  Analyze Book 
                 </button>
               </motion.li>
             ))}
@@ -100,6 +115,7 @@ const BooksPage = () => {
         )}
       </motion.div>
     </div>
+    </>
   );
 };
 
