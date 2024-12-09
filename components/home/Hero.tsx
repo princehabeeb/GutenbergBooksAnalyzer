@@ -192,15 +192,6 @@ const Hero = () => {
                       : book.content.slice(0, 100) + "..."}
                   </p>
                   <div className="flex justify-end mt-4 space-x-4">
-                    {/* <button
-                      onClick={() => toggleContent(idx)}
-                      className={`flex items-center ${
-                        theme === "dark" ? "text-blue-400" : "text-blue-500"
-                      }`}
-                    >
-                      <IconBook className="mr-1" />{" "}
-                      {book.isFullContentShown ? "Show Less" : "Show More"}
-                    </button> */}
                     <button
                       onClick={() => analyzeText(book)}
                       className={`flex items-center ${
