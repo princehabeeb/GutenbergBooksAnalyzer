@@ -22,8 +22,8 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchResult, setSearchResult] = useState<ResultType[]>([]);
-  const router = useRouter(); // For programmatic navigation
-  const isLoggedIn = false; // Simulate authentication. Replace with real logic.
+  const router = useRouter(); 
+  const isLoggedIn = false; 
 
   useLayoutEffect(() => {
     window.addEventListener("scroll", () => {
@@ -39,7 +39,7 @@ const Navbar = () => {
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target as Node)
       ) {
-        setSearchResult([]); // Clear search results if clicked outside
+        setSearchResult([]);
       }
     };
 
@@ -66,9 +66,9 @@ const Navbar = () => {
 
   const handleSavedListClick = () => {
     if (!isLoggedIn) {
-      router.push("/login"); // Redirect to login if not authenticated
+      router.push("/login"); 
     } else {
-      router.push("/saved-list"); // Redirect to saved list if authenticated
+      router.push("/saved-list"); 
     }
   };
 
